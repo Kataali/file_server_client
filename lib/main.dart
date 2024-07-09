@@ -1,12 +1,7 @@
 import 'package:file_server/constants/app_routes.dart';
 import 'package:file_server/constants/theme_data.dart';
-import 'package:file_server/pages/admin_nav.dart';
-import 'package:file_server/pages/file_email.dart';
-import 'package:file_server/pages/home.dart';
-import 'package:file_server/pages/login.dart';
-import 'package:file_server/pages/opt.dart';
-import 'package:file_server/pages/reset_password.dart';
-import 'package:file_server/pages/signup.dart';
+import 'package:file_server/pages/landing.dart';
+import 'package:file_server/providers/admin.provider.dart';
 import 'package:file_server/providers/file.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,12 +26,16 @@ class FileServerApp extends StatelessWidget {
         ChangeNotifierProvider<FileData>(
           create: (_) => FileData(),
         ),
+        ChangeNotifierProvider<AdminData>(
+          create: (_) => AdminData(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: themeData(context),
         routes: AppRoutes.getRoutes(),
-        home: const LoginPage(),
+        initialRoute: LandingPage.routeName,
+        home: const LandingPage(),
       ),
     );
   }

@@ -58,6 +58,7 @@ class CustomDialog {
                     )
                   : const SizedBox()
             ],
+              
           );
         });
   }

@@ -1,6 +1,5 @@
 import 'package:blurry_modal_progress_hud/blurry_modal_progress_hud.dart';
 import 'package:file_server/pages/landing.dart';
-import 'package:file_server/pages/login.dart';
 import 'package:file_server/pages/signup.dart';
 import 'package:file_server/pages/update_password.dart';
 import 'package:file_server/providers/user.provider.dart';

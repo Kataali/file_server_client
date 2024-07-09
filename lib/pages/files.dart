@@ -193,6 +193,7 @@ class _HomePageViewState extends State<HomePageView> {
                               }
                               return FittedBox(
                                 child: DataTable(
+                                  // columnSpacing: 1,
                                   headingTextStyle: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontStyle: FontStyle.italic,

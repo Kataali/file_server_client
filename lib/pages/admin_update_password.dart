@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:blurry_modal_progress_hud/blurry_modal_progress_hud.dart';
-import 'package:file_server/providers/user.provider.dart';
+import 'package:file_server/pages/admin_nav.dart';
+import 'package:file_server/providers/admin.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,26 +15,27 @@ import '../widgets/button.dart';
 import '../widgets/custom_textfield.dart';
 import '../utils/snackbar.dart';
 
-class UpdatePasswordPage extends StatefulWidget {
-  static const routeName = '/update-password';
-  const UpdatePasswordPage({super.key});
+class AdminUpdatePasswordPage extends StatefulWidget {
+  static const routeName = '/admin-update-password';
+  const AdminUpdatePasswordPage({super.key});
 
   @override
-  State<UpdatePasswordPage> createState() => _UpdatePasswordPageState();
+  State<AdminUpdatePasswordPage> createState() =>
+      _AdminUpdatePasswordPageState();
 }
 
-class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
-  TextEditingController currentPasswordController = TextEditingController();
+class _AdminUpdatePasswordPageState extends State<AdminUpdatePasswordPage> {
+  TextEditingController emailcontroller = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool isLoading = false;
-  final String serverEndPoint = Api.userEndpoint;
+  final String serverEndPoint = Api.adminEndpoint;
 
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme;
-    var provider = Provider.of<UserData>(context, listen: false);
+    var provider = Provider.of<AdminData>(context, listen: false);
 
     return Scaffold(
       appBar: PreferredSize(
@@ -85,10 +87,10 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                         thickness: .001,
                       ),
                       CustomTextField(
-                        hintText: "Current Password",
-                        controller: currentPasswordController,
-                        prefixIcon: const Icon(Icons.password_outlined),
-                        obscure: true,
+                        hintText: "Enter Admin Email",
+                        controller: emailcontroller,
+                        prefixIcon: const Icon(Icons.email_outlined),
+                        obscure: false,
                       ),
                       const Divider(
                         height: 30,
@@ -126,28 +128,34 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                               setState(() {
                                 isLoading = true;
                               });
-                              final String currentPassword =
-                                  currentPasswordController.value.text.trim();
+                              final String enteredEmail =
+                                  emailcontroller.value.text.trim();
                               final String newPassword =
                                   newPasswordController.value.text.trim();
                               final String confirmPassword =
                                   confirmPasswordController.value.text.trim();
-                              final String email = provider.userEmail;
-                              if (!_formKey.currentState!.validate()) {
-                                return;
-                              } else {
+                              final String email = provider.adminEmail;
+                              if (enteredEmail == email) {
                                 if (newPassword == confirmPassword) {
-                                  if (await updatePassword(
-                                      email, newPassword, currentPassword)) {
+                                  if (await updatePassword(newPassword)) {
                                     if (context.mounted) {
+                                      // CustomDialog.showPopUp(
+                                      //     context,
+                                      //     "Password Updated",
+                                      //     "Administrator Password changed successfully",
+                                      //     'OK',
+                                      //     null, () {
+                                      //   Navigator.pop(context);
+                                      // }, () {});
                                       CustomSnackbar.show(context,
-                                          "Password Changed Successfully");
-                                      Navigator.pop(context);
+                                          "Administrator Password Changed Successfully");
+                                      Navigator.pushNamed(
+                                          context, AdminNavPage.routeName);
                                     }
                                   } else {
                                     if (context.mounted) {
                                       CustomSnackbar.show(context,
-                                          "The Current Password you Entered is Wrong. Try Again");
+                                          "There was an error Changing Password");
                                     }
                                   }
                                 } else {
@@ -156,16 +164,21 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                                         "Passwords do not Match. Try Again");
                                   }
                                 }
-                                setState(() {
-                                  isLoading = false;
-                                });
+                              } else {
+                                if (context.mounted) {
+                                  CustomSnackbar.show(context,
+                                      "The Email you entered is not the administrator Email. Try Again");
+                                }
                               }
                             } catch (e) {
                               if (context.mounted) {
                                 CustomSnackbar.show(context,
-                                    "There was an error Changing Password");
+                                    "There was an error Changing Password $e");
                               }
                             }
+                            setState(() {
+                              isLoading = false;
+                            });
                           }
                         },
                       )
@@ -180,16 +193,17 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
     );
   }
 
-  Future<bool> updatePassword(email, newPassword, currentPassword) async {
+  Future<bool> updatePassword(newPassword) async {
     final res = await http.put(
-      Uri.parse("$serverEndPoint/update-password/$email"),
+      Uri.parse("$serverEndPoint/update-password"),
       headers: {
         'Content-Type': 'application/json',
       },
       body: jsonEncode(
-        {"newPassword": newPassword, "enteredPassword": currentPassword},
+        {"newPassword": newPassword},
       ),
     );
+    print(res.statusCode);
     if (res.statusCode == 200) return true;
     return false;
   }

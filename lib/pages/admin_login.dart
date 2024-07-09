@@ -1,13 +1,10 @@
 import 'dart:convert';
 
 import 'package:blurry_modal_progress_hud/blurry_modal_progress_hud.dart';
-import 'package:file_server/models/user.dart';
 import 'package:file_server/pages/admin_nav.dart';
-import 'package:file_server/pages/forgot_password.dart';
-import 'package:file_server/pages/home.dart';
 import 'package:file_server/pages/landing.dart';
-import 'package:file_server/pages/signup.dart';
-import 'package:file_server/utils/dialog.dart';
+import 'package:file_server/providers/admin.provider.dart';
+import 'package:file_server/utils/snackbar.dart';
 import 'package:file_server/widgets/button.dart';
 import 'package:file_server/widgets/auth_text_field.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +13,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
+import '../models/admin.dart';
 import '../models/api_model.dart';
-import '../providers/user.provider.dart';
-import '../utils/snackbar.dart';
 
 class AdminLoginPage extends StatefulWidget {
   static const routeName = '/admin-login';
@@ -31,9 +27,8 @@ class AdminLoginPage extends StatefulWidget {
 class _AdminLoginPageState extends State<AdminLoginPage> {
   TextEditingController passwordController = TextEditingController();
   bool isLoading = false;
-
   bool showPassword = false;
-  final String serverEndPoint = Api.userEndpoint;
+  final String serverEndPoint = Api.adminEndpoint;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -113,43 +108,42 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                             ),
                             MyButton(
                               onPressed: () async {
-                                // SystemChannels.textInput
-                                //     .invokeMethod<void>('TextInput.hide');
-
-                                // final String password =
-                                //     passwordController.value.text.trim();
-                                // if (!_formKey.currentState!.validate()) {
-                                //   return;
-                                // } else {
-                                //   try {
-                                //     setState(() {
-                                //       isLoading = true;
-                                //     });
-                                //     if (await logIn(password)) {
-                                //       if (context.mounted) {
-                                //         CustomSnackbar.show(
-                                //             context, "Login Successful");
-                                //         Navigator.pushNamed(
-                                //             context, HomePage.routeName);
-                                //       }
-                                //     } else {
-                                //       if (context.mounted) {
-                                //         CustomSnackbar.show(context,
-                                //             "Wrong Password. Try Again!!");
-                                //       }
-                                //     }
-                                //   } catch (e) {
-                                //     if (context.mounted) {
-                                //       CustomSnackbar.show(context,
-                                //           "Enter a registered Email. $e");
-                                //     }
-                                //   }
-                                //   setState(() {
-                                //     isLoading = false;
-                                //   });
-                                // }
-                                Navigator.pushNamed(
-                                    context, AdminNavPage.routeName);
+                                SystemChannels.textInput
+                                    .invokeMethod<void>('TextInput.hide');
+                                if (!_formKey.currentState!.validate()) {
+                                  return;
+                                } else {
+                                  try {
+                                    setState(() {
+                                      isLoading = true;
+                                    });
+                                    final String password =
+                                        passwordController.value.text.trim();
+                                    if (await logIn(password, context)) {
+                                      if (context.mounted) {
+                                        CustomSnackbar.show(
+                                            context, "Login Successful");
+                                        Navigator.pushNamed(
+                                            context, AdminNavPage.routeName);
+                                      }
+                                    } else {
+                                      if (context.mounted) {
+                                        CustomSnackbar.show(context,
+                                            "Wrong Password. Try Again!!");
+                                      }
+                                    }
+                                  } catch (e) {
+                                    if (context.mounted) {
+                                      CustomSnackbar.show(context,
+                                          "Server Error. Try Again!!! $e");
+                                    }
+                                  }
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                }
+                                // Navigator.pushNamed(
+                                //     context, AdminNavPage.routeName);
                               },
                               text: 'Login',
                               leading: Icon(
@@ -189,22 +183,19 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
     );
   }
 
-  Future<bool> logIn(password) async {
+  Future<bool> logIn(password, context) async {
     final res = await http.get(
       Uri.parse("$serverEndPoint/login/$password"),
     );
     // print(res.body);
     if (res.statusCode == 200) {
       final resData = jsonDecode(res.body);
-      final User user = User.fromJson(resData[0]);
+      final Admin admin = Admin.fromJson(resData[0]);
       if (context.mounted) {
-        Provider.of<UserData>(context, listen: false).getUser(user);
+        Provider.of<AdminData>(context, listen: false).getAdmin(admin);
       }
       return true;
     } else {
-      if (res.body == "Account not found") {
-        throw "No Account found for this Email";
-      }
       return false;
     }
   }

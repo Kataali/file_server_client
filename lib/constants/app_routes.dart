@@ -1,4 +1,5 @@
 import 'package:file_server/pages/admin_login.dart';
+import 'package:file_server/pages/admin_update_password.dart';
 import 'package:file_server/pages/manage_admin_account.dart';
 import 'package:file_server/pages/update_password.dart';
 import 'package:file_server/pages/upload.dart';
@@ -35,6 +36,8 @@ class AppRoutes {
           const ManageAdminAccountPage(),
       LandingPage.routeName: (context) => const LandingPage(),
       AdminLoginPage.routeName: (context) => const AdminLoginPage(),
+      AdminUpdatePasswordPage.routeName: (context) =>
+          const AdminUpdatePasswordPage()
     };
   }
 }

@@ -1,17 +1,12 @@
 import 'package:blurry_modal_progress_hud/blurry_modal_progress_hud.dart';
+import 'package:file_server/pages/admin_update_password.dart';
 import 'package:file_server/pages/landing.dart';
-import 'package:file_server/pages/login.dart';
-import 'package:file_server/pages/signup.dart';
-import 'package:file_server/pages/update_password.dart';
-import 'package:file_server/providers/user.provider.dart';
 import 'package:file_server/widgets/button.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/api_model.dart';
 import '../widgets/app_bar.dart';
-import '../utils/snackbar.dart';
 
 class ManageAdminAccountPage extends StatefulWidget {
   static const routeName = '/manage-admin-account';
@@ -28,14 +23,22 @@ class _ManageAdminAccountPageState extends State<ManageAdminAccountPage> {
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme;
-    var provider = Provider.of<UserData>(context, listen: false);
 
     return Scaffold(
-      appBar: const PreferredSize(
-          preferredSize: Size(double.infinity, 70),
+      appBar: PreferredSize(
+          preferredSize: const Size(double.infinity, 70),
           child: MyAppBar(
             title: "Manage Admin Account",
-            leading: SizedBox(),
+            leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: Icon(
+                Icons.arrow_back_ios,
+                size: 24,
+                color: color.secondary,
+              ),
+            ),
           )),
       body: PopScope(
         canPop: false,
@@ -91,7 +94,7 @@ class _ManageAdminAccountPageState extends State<ManageAdminAccountPage> {
                           ElevatedButton(
                             onPressed: () {
                               Navigator.pushNamed(
-                                  context, UpdatePasswordPage.routeName);
+                                  context, AdminUpdatePasswordPage.routeName);
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: color.primary,

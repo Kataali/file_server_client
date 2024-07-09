@@ -39,88 +39,92 @@ class _FileStatsPageState extends State<FileStatsPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: FutureBuilder(
-                      future: getFileStats(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          if (snapshot.data!.isEmpty) {
-                            return Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.multiline_chart_outlined,
-                                    size: 300,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: FutureBuilder(
+                        future: getFileStats(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            if (snapshot.data!.isEmpty) {
+                              return Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.multiline_chart_outlined,
+                                      size: 300,
+                                    ),
+                                    Text(
+                                      "OOps!! No Uploads Yet",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color: color.onSecondary),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                            return FittedBox(
+                              child: DataTable(
+                                headingTextStyle: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic,
+                                    color: color.onPrimary),
+                                headingRowColor:
+                                    WidgetStateProperty.all(color.primary),
+                                dataTextStyle:
+                                    TextStyle(color: color.secondary),
+                                columns: List.generate(
+                                  cols.length,
+                                  (index) => DataColumn(
+                                    label: Text(
+                                      cols[index],
+                                    ),
                                   ),
-                                  Text(
-                                    "OOps!! No Uploads Yet",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 18, color: color.onSecondary),
-                                  ),
-                                ],
+                                ),
+                                rows: List.generate(
+                                  snapshot.data!.length,
+                                  (index) {
+                                    final file = snapshot.data![index];
+                                    return DataRow(cells: <DataCell>[
+                                      DataCell(
+                                        Text(file.title),
+                                      ),
+                                      DataCell(
+                                        Text(file.type),
+                                      ),
+                                      DataCell(
+                                        Text(file.description),
+                                      ),
+                                      DataCell(
+                                        Text(file.uploadedOn),
+                                      ),
+                                      DataCell(
+                                        Text('${file.downloadCount}'),
+                                      ),
+                                      DataCell(
+                                        Text('${file.emailCount}'),
+                                      ),
+                                    ]);
+                                  },
+                                ),
                               ),
                             );
                           }
-                          return FittedBox(
-                            child: DataTable(
-                              headingTextStyle: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontStyle: FontStyle.italic,
-                                  color: color.onPrimary),
-                              headingRowColor:
-                                  WidgetStateProperty.all(color.primary),
-                              dataTextStyle: TextStyle(color: color.secondary),
-                              columns: List.generate(
-                                cols.length,
-                                (index) => DataColumn(
-                                  label: Text(
-                                    cols[index],
-                                  ),
-                                ),
-                              ),
-                              rows: List.generate(
-                                snapshot.data!.length,
-                                (index) {
-                                  final file = snapshot.data![index];
-                                  return DataRow(cells: <DataCell>[
-                                    DataCell(
-                                      Text(file.title),
-                                    ),
-                                    DataCell(
-                                      Text(file.type),
-                                    ),
-                                    DataCell(
-                                      Text(file.description),
-                                    ),
-                                    DataCell(
-                                      Text(file.uploadedOn),
-                                    ),
-                                    DataCell(
-                                      Text('${file.downloadCount}'),
-                                    ),
-                                    DataCell(
-                                      Text('${file.emailCount}'),
-                                    ),
-                                  ]);
-                                },
-                              ),
-                            ),
+                          return const Center(
+                            child: CircularProgressIndicator(),
                           );
-                        }
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }),
-                ),
-              ],
-            )
-          ],
+                        }),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

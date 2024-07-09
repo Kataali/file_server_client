@@ -1,6 +1,9 @@
 class Api {
-  static String userEndpoint = "http://localhost:3000/amali-api/users";
-  static String filesEndpoint = "http://localhost:3000/amali-api/files";
+  static String url = 'http://localhost:3000';
+  // static String url = 'https://file-server-backend-8zjh.onrender.com';
+  static String userEndpoint = "$url/amali-api/users";
+  static String filesEndpoint = "$url/amali-api/files";
   static String fileStatsEndpoint =
-      "http://localhost:3000/amali-api/file-stats";
+      "$url/amali-api/file-stats";
+  static String adminEndpoint = "$url/amali-api/admin";
 }

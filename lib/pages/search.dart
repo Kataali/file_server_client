@@ -36,7 +36,20 @@ class SearchPage extends StatelessWidget {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size(double.infinity, 70),
-        child: MyAppBar(title: "Search result(s) for $keyword"),
+        child: MyAppBar(
+          title: "Search result(s) for $keyword",
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              size: 24,
+              color: color.secondary,
+            ),
+          ),
+        ),
+        
       ),
       body: provider.searchedFilesLength != 0
           ? Padding(

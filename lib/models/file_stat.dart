@@ -19,7 +19,7 @@ class FileStat {
       title: json['title'],
       type: json['type'],
       description: json['description'],
-      uploadedOn: json["uploadedon"],
+      uploadedOn: json["uploaded_on"],
       downloadCount: json['download_count'],
       emailCount: json['email_count'],
     );

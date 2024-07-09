@@ -6,7 +6,6 @@ import 'package:file_server/pages/forgot_password.dart';
 import 'package:file_server/pages/home.dart';
 import 'package:file_server/pages/landing.dart';
 import 'package:file_server/pages/signup.dart';
-import 'package:file_server/utils/dialog.dart';
 import 'package:file_server/widgets/button.dart';
 import 'package:file_server/widgets/auth_text_field.dart';
 import 'package:flutter/material.dart';
