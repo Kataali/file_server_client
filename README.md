@@ -1,16 +1,15 @@
 # file_server
 
-A new Flutter project.
+This is a web application for the Amali pre-selection training program. The assignment was to build a file server with various functionalities.
+I have written this web app to interact with the server and demo its features.
 
-## Getting Started
+## Link to the app
+I have hosted the app on Netlify and the link to it is https://668e82760149941ca8e9323f--vocal-daifuku-9ec2ea.netlify.app
 
-This project is a starting point for a Flutter application.
+## Screenshots of the app
+Below are some screenshots of the client's UI
+/screenshots/landing.png
+/screenshots/signup.png
+/screenshots/user_login.png
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## More screenshots can be found in the screenshots folder
