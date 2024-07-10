@@ -8,8 +8,8 @@ I have hosted the app on Netlify and the link to it is https://668e82760149941ca
 
 ## Screenshots of the app
 Below are some screenshots of the client's UI
-/screenshots/landing.png
-/screenshots/signup.png
-/screenshots/user_login.png
+(/screenshots/landing.png)
+(/screenshots/signup.png)
+(/screenshots/user_login.png)
 
 ## More screenshots can be found in the screenshots folder
