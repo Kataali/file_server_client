@@ -241,8 +241,6 @@ class _UploadFilePage extends State<UploadFilePage> {
       ),
     );
     final res = await request.send();
-    print(file.name);
-    print(res.statusCode);
     if (res.statusCode == 200) {
       return true;
     }
