@@ -4,7 +4,7 @@ This is a web application for the Amali pre-selection training program. The assi
 I have written this web app to interact with the server and demo its features.
 
 ## Link to the app
-I have hosted the app on Netlify and the link to it is https://668e82760149941ca8e9323f--vocal-daifuku-9ec2ea.netlify.app
+I have hosted the app on Netlify and live at https://amali-file-server.netlify.app
 
 ## Screenshots of the app
 Below are some screenshots of the client's UI
