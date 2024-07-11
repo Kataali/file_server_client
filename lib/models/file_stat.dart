@@ -1,4 +1,5 @@
 class FileStat {
+  final int id;
   final String title;
   final String type;
   final String description;
@@ -7,7 +8,8 @@ class FileStat {
   final int emailCount;
 
   FileStat(
-      {required this.title,
+      {required this.id,
+      required this.title,
       required this.type,
       required this.description,
       required this.uploadedOn,
@@ -16,10 +18,11 @@ class FileStat {
 
   factory FileStat.fromJson(Map<String, dynamic> json) {
     return FileStat(
+      id: json["id"],
       title: json['title'],
       type: json['type'],
       description: json['description'],
-      uploadedOn: json["uploaded_on"],
+      uploadedOn: json["real_uploaded_on"],
       downloadCount: json['download_count'],
       emailCount: json['email_count'],
     );

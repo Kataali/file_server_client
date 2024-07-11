@@ -278,7 +278,7 @@ class _HomePageViewState extends State<HomePageView> {
                                                 margin: const EdgeInsets.only(
                                                     right: 7),
                                                 child: const Icon(
-                                                    Icons.download_outlined)),
+                                                    Icons.download_outlined),),
                                           ),
                                         ),
                                         DataCell(

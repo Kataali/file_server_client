@@ -3,7 +3,6 @@ import 'package:file_server/pages/admin_update_password.dart';
 import 'package:file_server/pages/landing.dart';
 import 'package:file_server/widgets/button.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 import '../models/api_model.dart';
 import '../widgets/app_bar.dart';
@@ -170,13 +169,5 @@ class _ManageAdminAccountPageState extends State<ManageAdminAccountPage> {
         ),
       ),
     );
-  }
-
-  Future<bool> deleteUser(userId) async {
-    final response =
-        await http.delete(Uri.parse("$serverEndPoint/delete/$userId"));
-    // print(response.body);
-    if (response.statusCode == 200) return true;
-    return false;
   }
 }

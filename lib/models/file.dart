@@ -20,7 +20,7 @@ class File {
         title: json['title'],
         type: json['type'],
         description: json['description'],
-      uploadedOn: json['uploaded_on'],
+      uploadedOn: json['real_uploaded_on'],
       path: json['file'],
     );
         

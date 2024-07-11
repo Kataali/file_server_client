@@ -199,7 +199,6 @@ class _OtpPageState extends State<OtpPage> {
                                         } else {
                                           if (await addUser(email, password)) {
                                             if (context.mounted) {
-                                              
                                               CustomDialog.showPopUp(
                                                   context,
                                                   "USER REGISTERED",
@@ -305,6 +304,9 @@ class _OtpPageState extends State<OtpPage> {
       body: jsonEncode(user),
     );
     if (res.statusCode == 200) {
+      if (res.body == "duplicate") {
+        throw "This email has been used by another user";
+      }
       return true;
     }
     return false;
